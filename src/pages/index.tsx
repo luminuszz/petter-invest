@@ -1,5 +1,4 @@
 import * as database from "@/services/firebase/firestore";
-import { createCommunityMutation } from "@/services/social-sdk";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -15,7 +14,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { GetServerSideProps, NextPage } from "next";
-import { FC, useEffect } from "react";
+import { useRouter } from "next/router";
+import { FC } from "react";
 
 type AtivoCardProps = {
   stock: {
@@ -79,30 +79,23 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ stocks }) => {
-  useEffect(() => {
-    createCommunityMutation({
-      id: "123",
-      name: "Teste",
-    });
-  }, []);
+  const router = useRouter();
 
   const handleAcceptCommunity = async (stock_slug: string) => {
     const existsComunity = await database.getCommunityBySlug(stock_slug);
 
     if (!existsComunity) {
-      const community = await database.createCommunity({
+      await database.createCommunity({
         name: stock_slug,
         stock_slug,
       });
-
-      console.log(community);
-    } else {
-      console.log("Comunidade já existe");
     }
+
+    router.push(`/comunidades/${stock_slug}`);
   };
 
   return (
-    <Container>
+    <Container width="container.xl">
       <Flex flexDir="column" px="2" pt="2">
         <VStack align="flex-start" spacing="10">
           <Heading size="md" color="gray.300">

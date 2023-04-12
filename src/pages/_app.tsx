@@ -2,6 +2,12 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 
 const theme = extendTheme({
+  fonts: {
+    body: "Roboto, sans-serif",
+    mono: "Roboto Mono, monospace",
+    heading: "Roboto, sans-serif",
+  },
+
   styles: {
     global: {
       body: {
