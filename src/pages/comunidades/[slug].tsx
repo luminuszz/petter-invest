@@ -22,12 +22,16 @@ const Comment: React.FC = () => {
         <Avatar borderRadius="full">
           <LoremAvatar style={{ borderRadius: 9999 }} />
         </Avatar>
-        <Text fontWeight="bold">{username()}</Text>
-        <Text fontWeight="bold">-</Text>
-        <Text>3 horas atrás</Text>
+        <Text color="gray.300" fontWeight="bold">
+          {username()}
+        </Text>
+        <Text color="gray.300" fontWeight="bold">
+          -
+        </Text>
+        <Text color="gray.300">3 horas atrás</Text>
       </HStack>
 
-      <Text mt="2" fontSize="lg">
+      <Text mt="2" fontSize="lg" color="gray.300">
         <LoremIpsum p={1} avgSentencesPerParagraph={3} />
       </Text>
 

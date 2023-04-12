@@ -1,13 +1,13 @@
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDuZ64606K1vR2ix7dAhY0kFXsQw2V9-IE",
-  authDomain: "bitnami-c56k7oelwg.firebaseapp.com",
-  projectId: "bitnami-c56k7oelwg",
-  storageBucket: "bitnami-c56k7oelwg.appspot.com",
-  messagingSenderId: "652102235290",
-  appId: "1:652102235290:web:f26bf9c443953641be1b23",
-  measurementId: "G-HM63ZZHCYC",
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MESARUMENT_ID,
 };
 
 export const app = initializeApp(firebaseConfig);
