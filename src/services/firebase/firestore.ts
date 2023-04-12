@@ -13,16 +13,14 @@ export const firestoreDatabase = getFirestore(app);
 type CreateCommunityInput = {
   name: string;
   stock_slug: string;
+  logo_img: string;
 };
 
-export const createCommunity = async ({
-  name,
-  stock_slug,
-}: CreateCommunityInput) => {
-  const docRef = await addDoc(collection(firestoreDatabase, "communities"), {
-    name,
-    stock_slug,
-  });
+export const createCommunity = async (payload: CreateCommunityInput) => {
+  const docRef = await addDoc(
+    collection(firestoreDatabase, "communities"),
+    payload
+  );
   console.log("Document written with ID: ", docRef.id);
 };
 

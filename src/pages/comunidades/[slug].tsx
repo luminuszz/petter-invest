@@ -32,13 +32,13 @@ const Comment: React.FC = () => {
       </Text>
 
       <HStack spacing="8">
-        <Flex alignItems="center">
+        <Flex alignItems="center" justifyContent="center">
           <IconButton variant="unstyled" aria-label="like button">
             <Icon w={6} h={6} as={AiOutlineLike} />
           </IconButton>
           <Text>12</Text>
         </Flex>
-        <Flex alignItems="center">
+        <Flex alignItems="center" justifyContent="center">
           <IconButton variant="unstyled" aria-label="like button">
             <Icon w={6} h={6} as={AiOutlineDislike} />
           </IconButton>
@@ -53,8 +53,6 @@ const StockPage: NextPage<{
   results: { symbol: string; regularMarketPrice: number; longName: string };
 }> = ({ results }) => {
   const router = useRouter();
-
-  console.log({ results });
 
   return (
     <Container width="container.xl">
@@ -83,7 +81,7 @@ const StockPage: NextPage<{
         </VStack>
 
         <Heading mt="10" size="xl">
-          Oque a comunidade diz sobre isso
+          Oque a comunidade diz sobre isso :
         </Heading>
 
         <VStack spacing={4} mt="12" alignItems="flex-start">

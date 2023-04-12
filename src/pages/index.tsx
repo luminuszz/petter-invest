@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { FC, useState } from "react";
 
 type AtivoCardProps = {
   stock: {
@@ -80,18 +80,30 @@ interface Props {
 
 const Home: NextPage<Props> = ({ stocks }) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
-  const handleAcceptCommunity = async (stock_slug: string) => {
-    const existsComunity = await database.getCommunityBySlug(stock_slug);
+  const handleAcceptCommunity = async (stock: Stock) => {
+    if (loading) return;
 
-    if (!existsComunity) {
-      await database.createCommunity({
-        name: stock_slug,
-        stock_slug,
-      });
+    setLoading(true);
+
+    try {
+      const existsCommunity = await database.getCommunityBySlug(stock.name);
+
+      if (!existsCommunity) {
+        await database.createCommunity({
+          logo_img: stock.logo,
+          name: stock.name,
+          stock_slug: stock.name,
+        });
+      }
+
+      router.push(`/comunidades/${stock.stock}`);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-
-    router.push(`/comunidades/${stock_slug}`);
   };
 
   return (
@@ -101,28 +113,24 @@ const Home: NextPage<Props> = ({ stocks }) => {
           <Heading size="md" color="gray.300">
             Ativos
           </Heading>
-
           <InputGroup>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
             </InputLeftElement>
             <Input type="tel" placeholder="Procure pelo seu ativo" />
           </InputGroup>
-
           <HStack width="full" justifyContent="space-between">
             <Heading size="md" color="gray.300">
               Ativos populares
             </Heading>
-
             <Heading color="blue.500" size="md">
               Favoritos
             </Heading>
           </HStack>
-
           <VStack gap="2" w="full" spacing={2} paddingY={2}>
             {stocks?.map((stock) => (
               <AtivoCard
-                handleClick={() => handleAcceptCommunity(stock.stock)}
+                handleClick={() => handleAcceptCommunity(stock)}
                 stock={{
                   logo: stock.logo,
                   name: stock.name,
@@ -150,7 +158,7 @@ export interface Stock {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const response = await fetch("https://brapi.dev/api/quote/list?limit=10");
+  const response = await fetch("https://brapi.dev/api/quote/list?limit=20");
 
   const { stocks } = (await response.json()) as { stocks: Stock[] };
 
