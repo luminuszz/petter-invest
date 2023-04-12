@@ -71,8 +71,10 @@ const StockPage: NextPage<{
         </HStack>
 
         <VStack mt="10" alignItems="flex-start" spacing={2}>
-          <Heading size="xl">{results.symbol}</Heading>
-          <Text fontWeight="bold" fontSize="16px">
+          <Heading color="gray.300" size="xl">
+            {results.symbol}
+          </Heading>
+          <Text color="gray.300" fontWeight="bold" fontSize="16px">
             {results.longName}
           </Text>
 
@@ -84,7 +86,7 @@ const StockPage: NextPage<{
           </Text>
         </VStack>
 
-        <Heading mt="10" size="xl">
+        <Heading color="gray.300" mt="10" size="xl">
           Oque a comunidade diz sobre isso :
         </Heading>
 
