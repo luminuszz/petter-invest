@@ -38,15 +38,15 @@ const Comment: React.FC = () => {
       <HStack spacing="8">
         <Flex alignItems="center" justifyContent="center">
           <IconButton variant="unstyled" aria-label="like button">
-            <Icon w={6} h={6} as={AiOutlineLike} />
+            <Icon color="gray.300" w={6} h={6} as={AiOutlineLike} />
           </IconButton>
-          <Text>12</Text>
+          <Text color="gray.300">12</Text>
         </Flex>
         <Flex alignItems="center" justifyContent="center">
           <IconButton variant="unstyled" aria-label="like button">
-            <Icon w={6} h={6} as={AiOutlineDislike} />
+            <Icon color="gray.300" w={6} h={6} as={AiOutlineDislike} />
           </IconButton>
-          <Text>12</Text>
+          <Text color="gray.300">12</Text>
         </Flex>
       </HStack>
     </VStack>
