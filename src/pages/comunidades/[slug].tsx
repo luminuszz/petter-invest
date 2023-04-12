@@ -66,7 +66,7 @@ const StockPage: NextPage<{
             onClick={() => router.back()}
             variant="unstyled"
             aria-label="button"
-            icon={<ArrowLeftIcon />}
+            icon={<ArrowLeftIcon color="gray.300" />}
           />
         </HStack>
 
