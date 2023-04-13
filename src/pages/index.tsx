@@ -82,29 +82,33 @@ const Home: NextPage<Props> = ({ stocks }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const handleAcceptCommunity = async (stock: Stock) => {
+  async function handleAcceptCommunity(stock: Stock) {
     if (loading) return;
-
     setLoading(true);
-
     try {
       const existsCommunity = await database.getCommunityBySlug(stock.name);
 
+      let communityId: string;
+
       if (!existsCommunity) {
-        await database.createCommunity({
+        const id = await database.createCommunity({
           logo_img: stock.logo,
           name: stock.name,
           stock_slug: stock.name,
         });
+
+        communityId = id;
+      } else {
+        communityId = existsCommunity.id;
       }
 
-      router.push(`/comunidades/${stock.stock}`);
+      router.push(`/comunidades/${communityId}`);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <Container width="container.xl">
