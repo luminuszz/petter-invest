@@ -190,10 +190,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const parsedData = {
     ...community?.props,
-    comments: community?.props?.comments.map((comment) => ({
-      ...comment,
-      created_at: comment.created_at.toString(),
-    })),
+    comments:
+      community?.props?.comments?.map((comment) => ({
+        ...comment,
+        created_at: comment.created_at.toString(),
+      })) || [],
   };
 
   console.log({

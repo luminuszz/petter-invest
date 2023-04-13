@@ -20,14 +20,15 @@ export type FirebaseCommunity = {
 export const communityMapper = {
   toEntity: (document: FirebaseCommunity, id: string) =>
     new Community({
-      comments: document.comments.map((comment) => ({
-        created_at: comment.created_at.toDate(),
-        deslikes: comment.deslikes,
-        id: comment.id,
-        likes: comment.likes,
-        message: comment.message,
-        user_id: comment.user_id,
-      })),
+      comments:
+        document?.comments?.map((comment) => ({
+          created_at: comment.created_at.toDate(),
+          deslikes: comment.deslikes,
+          id: comment.id,
+          likes: comment.likes,
+          message: comment.message,
+          user_id: comment.user_id,
+        })) || [],
       id,
       logo_img: document.logo_img,
       stock_slug: document.stock_slug,
