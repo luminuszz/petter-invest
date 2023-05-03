@@ -72,11 +72,12 @@ type CreateCommentInput = {
   message: string;
 };
 
-export const createComment = async ({
+
+export async function createComment({
   community_id,
   message,
   user_id,
-}: CreateCommentInput) => {
+}: CreateCommentInput) {
   const community = doc(firestoreDatabase, "communities", community_id);
 
   const comment = {
@@ -91,4 +92,7 @@ export const createComment = async ({
   await updateDoc(community, {
     comments: arrayUnion(comment),
   });
-};
+}
+
+
+

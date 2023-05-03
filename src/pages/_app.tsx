@@ -1,5 +1,6 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
+import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 
 const theme = extendTheme({
   fonts: {
@@ -25,10 +26,16 @@ const theme = extendTheme({
   },
 });
 
+export const queryClient = new QueryClient();
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider theme={theme} resetCSS>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider theme={theme} resetCSS>
+        <Hydrate state={pageProps.dehydratedState}>
+          <Component {...pageProps} />
+        </Hydrate>
+      </ChakraProvider>
+    </QueryClientProvider>
   );
 }

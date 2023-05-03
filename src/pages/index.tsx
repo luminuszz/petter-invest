@@ -1,4 +1,12 @@
+import { Header } from "@/components/Header";
 import * as database from "@/services/firebase/firestore";
+import {
+  GetServerSideWithCache,
+  Stock,
+  getAtivos,
+  getAtivosKey,
+  useGetAtivos,
+} from "@/services/getAtivos";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -13,9 +21,11 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { GetServerSideProps, NextPage } from "next";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
+import { dehydrate } from "react-query";
+import { queryClient } from "./_app";
 
 type AtivoCardProps = {
   stock: {
@@ -78,9 +88,11 @@ interface Props {
   stocks: Stock[];
 }
 
-const Home: NextPage<Props> = ({ stocks }) => {
+const Home: NextPage<Props> = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  const { data: stocks = [] } = useGetAtivos();
 
   async function handleAcceptCommunity(stock: Stock) {
     if (loading) return;
@@ -112,6 +124,8 @@ const Home: NextPage<Props> = ({ stocks }) => {
 
   return (
     <Container width="container.xl">
+      <Header />
+
       <Flex flexDir="column" px="2" pt="2">
         <VStack align="flex-start" spacing="10">
           <Heading size="md" color="gray.300">
@@ -150,25 +164,12 @@ const Home: NextPage<Props> = ({ stocks }) => {
   );
 };
 
-export interface Stock {
-  stock: string;
-  name: string;
-  close: number;
-  change: number;
-  volume: number;
-  market_cap?: number;
-  logo: string;
-  sector?: string;
-}
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const response = await fetch("https://brapi.dev/api/quote/list?limit=20");
-
-  const { stocks } = (await response.json()) as { stocks: Stock[] };
+export const getServerSideProps: GetServerSideWithCache = async () => {
+  await queryClient.fetchQuery(getAtivosKey, getAtivos);
 
   return {
     props: {
-      stocks,
+      dehydratedState: dehydrate(queryClient),
     },
   };
 };
