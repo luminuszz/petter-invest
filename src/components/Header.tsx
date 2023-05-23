@@ -36,7 +36,7 @@ export function Header() {
     } catch (e) {
       if (e instanceof PetterInvestHttpError) {
         if (user) {
-          pettierInvestSdkForum.createUser({
+          await pettierInvestSdkForum.createUser({
             email: user.email as string,
             username: user.name as string,
           });
@@ -47,6 +47,9 @@ export function Header() {
     }
   }
 
+  /*   useEffect(() => {
+    deleteSession().then(() => console.log("logout"));
+  }, []); */
   return (
     <Flex justify="space-between" alignItems="center" py="2" px="2" mt="2">
       <IconButton aria-label="meny" variant="ghost">

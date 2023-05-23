@@ -1,4 +1,9 @@
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
 import { app } from ".";
 
 const firebaseAuth = getAuth(app);
@@ -29,4 +34,8 @@ export async function createSessionWithGoogle() {
     username: user.displayName,
     imageAvatar: user.photoURL,
   };
+}
+
+export async function deleteSession() {
+  return signOut(firebaseAuth);
 }

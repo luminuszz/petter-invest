@@ -1,9 +1,16 @@
 import { Head, Html, Main, NextScript } from "next/document";
 
+import { useState } from "react";
+
 export default function Document() {
+  const [state, setState] = useState(false);
+
+  console.log({ state });
+
   return (
     <Html lang="pt-br">
       <Head>
+        <meta name="author" content="admin1" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

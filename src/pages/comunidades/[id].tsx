@@ -1,9 +1,9 @@
+import { InformationTab } from "@/components/comunidades/InformationTab";
 import { Community } from "@/core/entities/community.type";
 import { getCommunityById } from "@/services/firebase/firestore";
 import { ArrowLeftIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Container,
   Flex,
   HStack,
   Heading,
@@ -11,39 +11,49 @@ import {
   Image,
   Tab,
   TabList,
-  TabPanel,
-  TabPanels,
   Tabs,
   VStack,
 } from "@chakra-ui/react";
 import { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+
+("use client");
 
 type StockPageProps = {
   community: Community;
 };
 
-interface ForumFrameProps {
-  community: Community;
-}
+const ForumFrame = () => {
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "/discourse.js";
+    document.getElementsByTagName("body")[0].appendChild(script);
+  }, []);
 
-function ForumFrame() {
-  return (
-    <iframe
-      allowFullScreen
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      width="100%"
-      height="100%"
-      src={`http://45.79.221.151:4567/category/5/bbse3`}
-    />
-  );
-}
+  return <div id="discourse-comments"></div>;
+};
+
+type Keys = 0 | 1 | 2;
+
+const CustomTabs: Record<Keys, any> = {
+  0: <InformationTab />,
+  1: <ForumFrame />,
+  2: <p></p>,
+};
 
 const StockPage: NextPage<StockPageProps> = ({ community: communityData }) => {
   const router = useRouter();
 
+  const [tabIndex, setTabIndex] = useState<Keys>(0);
+
   return (
-    <Container margin="auto">
+    <>
+      <Head>
+        <meta name="discourse-username" content="admin1" />
+      </Head>
+
       <Flex p="2" flexDir="column" flex="1" width="full">
         <HStack flex="1" width="full">
           <IconButton
@@ -82,29 +92,23 @@ const StockPage: NextPage<StockPageProps> = ({ community: communityData }) => {
             </Heading>
           </VStack>
 
-          <Tabs size="lg" variant="line">
+          <Tabs
+            onChange={(tabIndex) => setTabIndex(tabIndex as Keys)}
+            variant="solid-rounded"
+          >
             <TabList>
-              <Tab>Informações</Tab>
-              <Tab>Turma</Tab>
-              <Tab>Desafios</Tab>
+              <Tab color="white">Informações</Tab>
+              <Tab color="white">Turma</Tab>
+              <Tab color="white">Jogos</Tab>
             </TabList>
-            <TabPanels>
-              <TabPanel>
-                <p>Informações!</p>
-              </TabPanel>
-              <TabPanel h="full">
-                <Box height="100vh">
-                  <ForumFrame />
-                </Box>
-              </TabPanel>
-              <TabPanel>
-                <p>Desafios!</p>
-              </TabPanel>
-            </TabPanels>
           </Tabs>
+
+          <Box w="full" h="100vh" mx="2">
+            {CustomTabs[tabIndex]}
+          </Box>
         </VStack>
       </Flex>
-    </Container>
+    </>
   );
 };
 

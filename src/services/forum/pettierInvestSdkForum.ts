@@ -22,7 +22,7 @@ class PettierInvestSdkForum {
   }
 
   async getUserByEmail(email: string) {
-    const data = await this.apiGateway.get(`/users/email/${email}`);
+    const data = await this.apiGateway.get(`/user/email/${encodeURI(email)}`);
 
     return data;
   }
